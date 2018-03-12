@@ -1,0 +1,37 @@
+{
+  "name": "carousel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "parcel example/index.html"
+  },
+  "author": "bogas04",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "jest": "^22.4.2",
+    "parcel-bundler": "^1.6.2",
+    "prop-types": "^15.6.1"
+  },
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "react"
+    ],
+    "plugins": [
+      "transform-react-remove-prop-types",
+      "transform-object-rest-spread",
+      "transform-class-properties"
+    ]
+  }
+}
