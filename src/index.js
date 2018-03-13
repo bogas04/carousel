@@ -25,12 +25,22 @@ export default class Carousel extends React.PureComponent {
     offset: 50,
     startWithIndex: 0,
     wrapAround: true,
+    autoPlay: true,
+    autoPlayDuration: 2500,
     renderControls: null,
   };
 
   static propTypes = {
     // Amount (pixels) of touchMove to wait before triggering a swipe
     offset: PropTypes.number,
+    // Index to start with.
+    startWithIndex: PropTypes.number,
+    // Boolean to toggle wrapping around.
+    wrapAround: PropTypes.bool,
+    // AutoPlay the slides
+    autoPlay: PropTypes.bool,
+    // AutoPlay duration (milliseconds)
+    autoPlayDuration: PropTypes.number,
     /* Render prop that accepts  {
       `setItemRef`, curry fn that accepts `index` and returns a fn that is required to bind to each item's `ref`.
       `setWrapperRef`, fn user needs to bind to `ref` of items' wrapper.
@@ -40,15 +50,13 @@ export default class Carousel extends React.PureComponent {
       `scrollToIndex`, fn to scroll to the passed `index`.
     } */
     children: PropTypes.func.isRequired,
-    // Index to start with.
-    startWithIndex: PropTypes.number,
-    // Boolean to toggle wrapping around.
-    wrapAround: PropTypes.bool,
   };
 
   touchStartPosition = null;
 
   scrollInProgress = false;
+
+  autoPlayTimer = null;
 
   state = {
     currentIndex: this.props.startWithIndex,
@@ -84,7 +92,22 @@ export default class Carousel extends React.PureComponent {
     });
   }
 
-  _onTransitionEnd = () => this.scrollInProgress = false;
+  _onTransitionEnd = () => {
+    const { autoPlay, autoPlayDuration } = this.props;
+
+    this.scrollInProgress = false;
+
+    if (autoPlay) {
+      if (this.autoPlayTimer !== null) {
+        clearInterval(this.autoPlayTimer)
+        this.autoPlayTimer = null;
+      }
+
+      this.autoPlayTimer = setTimeout(() => {
+        this.handleSwipe(SWIPES.LEFT);
+      }, autoPlayDuration);
+    }
+  }
 
   setWrapperRef = node => (this.$wrapper = node);
 

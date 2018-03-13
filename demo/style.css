@@ -1,0 +1,57 @@
+.container {
+  padding: 20px;
+}
+
+.carouselContainer {
+  overflow: hidden;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  transition: transform .5s;
+}
+
+.item {
+  width: 100%;
+  text-align: center;
+}
+
+.item img {
+  width: 100%;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.caption {
+  text-align: center;
+  animation: fade-in 0.5s ease-in-out;
+}
+
+.controls {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  top: -40px;
+}
+
+.dot {
+  height: 8px;
+  width: 8px;
+  display: inline-block;
+  margin: 6px;
+  background-color: rgba(255;255;255; 0.5);
+  border-radius: 50%;
+  box-shadow: 0 0 2px 0px black;
+}
+
+.dotActive {
+  background-color: #fc801a;
+}
