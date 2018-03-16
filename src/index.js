@@ -1,17 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 export const SWIPES = {
   LEFT: 0,
-  RIGHT: 1,
+  RIGHT: 1
 };
 
 export const getNewIndex = ({ wrapAround, length, currentIndex, swipe }) => {
   switch (swipe) {
-    case SWIPES.LEFT: return wrapAround
+    case SWIPES.LEFT:
+      return wrapAround
         ? (currentIndex + 1) % length
         : Math.min(currentIndex + 1, length - 1);
-    case SWIPES.RIGHT: 
+    case SWIPES.RIGHT:
       return wrapAround
         ? currentIndex - 1 < 0 ? length - 1 : currentIndex - 1
         : Math.max(0, currentIndex - 1);
@@ -27,7 +28,7 @@ export default class Carousel extends React.PureComponent {
     wrapAround: true,
     autoPlay: true,
     autoPlayDuration: 2500,
-    renderControls: null,
+    renderControls: null
   };
 
   static propTypes = {
@@ -49,7 +50,7 @@ export default class Carousel extends React.PureComponent {
       `currentIndex`, index of currently selected item.
       `scrollToIndex`, fn to scroll to the passed `index`.
     } */
-    children: PropTypes.func.isRequired,
+    children: PropTypes.func.isRequired
   };
 
   touchStartPosition = null;
@@ -59,16 +60,16 @@ export default class Carousel extends React.PureComponent {
   autoPlayTimer = null;
 
   state = {
-    currentIndex: this.props.startWithIndex,
+    currentIndex: this.props.startWithIndex
   };
 
   componentDidMount() {
     this.jumpToIndex(this.state.currentIndex);
-    this.$wrapper.addEventListener('transitionend', this._onTransitionEnd);
+    this.$wrapper.addEventListener("transitionend", this._onTransitionEnd);
   }
 
   componentWillUnmount() {
-    this.$wrapper.removeEventListener('transitionend', this._onTransitionEnd);
+    this.$wrapper.removeEventListener("transitionend", this._onTransitionEnd);
   }
 
   render() {
@@ -79,7 +80,7 @@ export default class Carousel extends React.PureComponent {
       setItemRef,
       setWrapperRef,
       handleTouchStart,
-      handleTouchMove,
+      handleTouchMove
     } = this;
 
     return children({
@@ -88,7 +89,7 @@ export default class Carousel extends React.PureComponent {
       currentIndex,
       handleTouchStart,
       handleTouchMove,
-      scrollToIndex,
+      scrollToIndex
     });
   }
 
@@ -99,7 +100,7 @@ export default class Carousel extends React.PureComponent {
 
     if (autoPlay) {
       if (this.autoPlayTimer !== null) {
-        clearInterval(this.autoPlayTimer)
+        clearInterval(this.autoPlayTimer);
         this.autoPlayTimer = null;
       }
 
@@ -107,13 +108,14 @@ export default class Carousel extends React.PureComponent {
         this.handleSwipe(SWIPES.LEFT);
       }, autoPlayDuration);
     }
-  }
+  };
 
   setWrapperRef = node => (this.$wrapper = node);
 
   setItemRef = index => node => (this[`$item${index}`] = node);
 
-  handleTouchStart = ({ touches: [{ screenX: x, screenY: y }] }) => this.touchStartPosition = { x, y };
+  handleTouchStart = ({ touches: [{ screenX: x, screenY: y }] }) =>
+    (this.touchStartPosition = { x, y });
 
   handleTouchMove = e => {
     if (!this.scrollInProgress) {
@@ -127,6 +129,8 @@ export default class Carousel extends React.PureComponent {
       if (x - touchStartPosition.x > offset) {
         this.handleSwipe(SWIPES.RIGHT);
       }
+
+      e.preventDefault();
     }
   };
 
@@ -136,7 +140,7 @@ export default class Carousel extends React.PureComponent {
       swipe,
       wrapAround,
       currentIndex: this.state.currentIndex,
-      length,
+      length
     });
     this.scrollToIndex(newIndex);
   };
@@ -148,7 +152,8 @@ export default class Carousel extends React.PureComponent {
     }
   };
 
-  translateYTo = pixels => this.$wrapper.style.transform = `translateX(${pixels}px)`;
+  translateYTo = pixels =>
+    (this.$wrapper.style.transform = `translateX(${pixels}px)`);
 
   scrollToIndex = index => {
     if (index === this.state.currentIndex) {
@@ -157,9 +162,8 @@ export default class Carousel extends React.PureComponent {
 
     this.scrollInProgress = true;
 
-    this.setState(
-      { currentIndex: index },
-      () => this.translateYTo(-this[`$item${index}`].offsetLeft)
+    this.setState({ currentIndex: index }, () =>
+      this.translateYTo(-this[`$item${index}`].offsetLeft)
     );
   };
 }
